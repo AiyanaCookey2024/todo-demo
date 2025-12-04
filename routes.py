@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from datetime import datetime
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 from models import User, Todo
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
@@ -92,7 +92,6 @@ def delete_task(task_id):
     return redirect(url_for("all_tasks"))
 
 @app.route('/login', methods=["GET", "POST"])
-@login_required
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))    
@@ -118,3 +117,17 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, your registration was successful')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
