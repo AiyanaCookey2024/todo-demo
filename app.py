@@ -5,13 +5,12 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 
 app = Flask(__name__) # Creating an instance of the Flask class
-
+# Loads all uppercase attributes from the Config class into the app's config
 app.config.from_object(Config) # Loading configuration settings from the Config class
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-
 
 import routes 
 

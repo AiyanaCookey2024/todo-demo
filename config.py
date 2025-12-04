@@ -1,6 +1,6 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
+from dotenv import load_dotenv # requires python-dotenv package
+load_dotenv() # loads everything from .env file into environment variables
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
